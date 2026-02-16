@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { getDailySeed, getSeededItem, DAILY_WORDS } from '../../engine/puzzleEngine';
 
 interface WordleProps {
