@@ -1,32 +1,31 @@
 import Dexie, { type EntityTable } from 'dexie';
 
-interface LocalUser {
+// Define the interfaces that were missing
+export interface LocalUser {
   id?: number;
-  name: string;
   email: string;
+  name?: string;
 }
 
-interface GameState {
+export interface GameState {
   id?: number;
   userId: string;
   date: string;
-  status: 'playing' | 'completed';
+  status: 'completed' | 'in-progress';
   score: number;
   puzzleType: string;
 }
 
 const db = new Dexie('InternAppDB') as Dexie & {
   users: EntityTable<LocalUser, 'id'>;
-  gameStates: EntityTable<GameState, 'id'>; 
+  gameStates: EntityTable<GameState, 'id'>;
 };
 
+// Schema declaration
 db.version(1).stores({
-  users: '++id, email'
-});
-
-db.version(2).stores({
   users: '++id, email',
-  gameStates: '++id, userId, date, status' 
+  gameStates: '++id, userId, date'
 });
 
+// IMPORTANT: You must EXPORT db so GameBoard.tsx can use it
 export { db };
