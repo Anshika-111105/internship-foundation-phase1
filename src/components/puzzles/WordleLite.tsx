@@ -10,7 +10,7 @@ export const WordleLite: React.FC<WordleProps> = ({ onWin }) => {
   const [isError, setIsError] = useState(false);
 
   // Logic: Get today's secret word
-  const seed = getDailySeed();
+  const seed = getDailySeed("wordle-secret-v1");
   const solution = getSeededItem(DAILY_WORDS, seed);
 
   const handleSubmit = (e: React.FormEvent) => {
