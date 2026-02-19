@@ -1,44 +1,28 @@
 import dayjs from 'dayjs';
-import { GameState } from '../db';
+import type { GameState } from '../db'; 
 
-/**
- * Calculates the current daily streak by checking consecutive days backwards.
- */
-export const calculateStreak = (allRecords: GameState[]): number => {
-  if (!allRecords || allRecords.length === 0) return 0;
+export const calculateStreak = (records: GameState[]): number => {
+  if (records.length === 0) return 0;
+  const completedDates = Array.from(new Set(records.map((r) => r.date)))
+    .sort((a, b) => dayjs(b).diff(dayjs(a)));
 
-  // Create a quick-lookup map of solved dates
-  const solvedDates = new Set(
-    allRecords
-      .filter(r => r.status === 'completed')
-      .map(r => r.date)
-  );
+  const today = dayjs().format('YYYY-MM-DD');
+  const yesterday = dayjs().subtract(1, 'day').format('YYYY-MM-DD');
+
+  if (!completedDates.includes(today) && !completedDates.includes(yesterday)) return 0;
 
   let streak = 0;
-  let current = dayjs();
-
-  // If they haven't solved today yet, start checking from yesterday
-  const todayStr = dayjs().toLocaleDateString();
-  if (!solvedDates.has(todayStr)) {
-    current = dayjs().subtract(1, 'day');
-  }
-
-  while (solvedDates.has(current.toLocaleDateString())) {
+  let curr = completedDates.includes(today) ? dayjs() : dayjs().subtract(1, 'day');
+  while (completedDates.includes(curr.format('YYYY-MM-DD'))) {
     streak++;
-    current = current.subtract(1, 'day');
+    curr = curr.subtract(1, 'day');
   }
-
   return streak;
 };
 
-/**
- * Maps Intensity Level based on score
- * 0: Not Played, 1-4: Progressive Intensity
- */
-export const getIntensity = (score: number): number => {
-  if (!score) return 0;
-  if (score < 300) return 1;
-  if (score < 600) return 2;
-  if (score < 900) return 3;
-  return 4;
+export const getIntensityLevel = (score: number): number => {
+  if (score >= 900) return 4;
+  if (score >= 600) return 3;
+  if (score >= 300) return 2;
+  return score > 0 ? 1 : 0;
 };
