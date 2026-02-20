@@ -11,8 +11,9 @@ export interface GameState {
   date: string;
   status: 'completed' | 'in-progress';
   score: number;
+  timeTaken: number;
   puzzleType: string;
-  timeTaken: number; // Add this line to resolve the "Object literal" error
+  synced?: boolean; 
 }
 
 const db = new Dexie('InternAppDB') as Dexie & {
@@ -20,9 +21,10 @@ const db = new Dexie('InternAppDB') as Dexie & {
   gameStates: EntityTable<GameState, 'id'>;
 };
 
-db.version(1).stores({
+// Version 2 upgrade: adding 'synced' to the index
+db.version(2).stores({
   users: '++id, email',
-  gameStates: '++id, userId, date'
+  gameStates: '++id, userId, date, synced' // Added synced index here
 });
 
 export { db };

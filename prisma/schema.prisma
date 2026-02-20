@@ -1,0 +1,19 @@
+datasource db {
+  provider = "postgresql"
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model GameScore {
+  id         Int      @id @default(autoincrement())
+  userId     String
+  date       String
+  score      Int
+  timeTaken  Int
+  puzzleType String
+  createdAt  DateTime @default(now())
+
+  @@unique([userId, date])
+}
