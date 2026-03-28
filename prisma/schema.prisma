@@ -1,19 +1,8 @@
 datasource db {
   provider = "postgresql"
+  url      = "postgresql://neondb_owner:npg_AByTzJ7hs0uE@ep-lucky-rice-ai0ity47-pooler.c-4.us-east-1.aws.neon.tech/neondb?sslmode=require&channel_binding=require"
 }
 
 generator client {
   provider = "prisma-client-js"
-}
-
-model GameScore {
-  id         Int      @id @default(autoincrement())
-  userId     String
-  date       String
-  score      Int
-  timeTaken  Int
-  puzzleType String
-  createdAt  DateTime @default(now())
-
-  @@unique([userId, date])
 }
