@@ -1,15 +1,10 @@
-import { PrismaClient } from '@prisma/client';
+import { PrismaClient } from '../generated/prisma'
 
-declare const global: typeof globalThis & { prisma?: PrismaClient };
-
-const globalForPrisma = global;
-
-export const prisma =
-  globalForPrisma.prisma ||
-  new PrismaClient({
-    log: ['query'],
-  });
-
-if (typeof process !== 'undefined' && process.env.NODE_ENV !== 'production') {
-  globalForPrisma.prisma = prisma;
+declare global {
+  // eslint-disable-next-line no-var
+  var prisma: PrismaClient | undefined
 }
+
+const prisma = globalThis.prisma ?? new PrismaClient()
+
+export default prisma
