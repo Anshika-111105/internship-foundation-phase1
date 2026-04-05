@@ -5,6 +5,8 @@ declare global {
   var prisma: PrismaClient | undefined
 }
 
-const prisma = globalThis.prisma ?? new PrismaClient()
+const prisma = globalThis.prisma ?? new PrismaClient({
+  log: ['error'],
+})
 
 export default prisma
