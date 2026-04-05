@@ -3,9 +3,6 @@ generator client {
   binaryTargets = ["native", "rhel-openssl-3.0.x"]
 }
 
-
 datasource db {
   provider = "postgresql"
-  url      ="postgresql://neondb_owner:npg_AByTzJ7hs0uE@ep-lucky-rice-ai0ity47-pooler.c-4.us-east-1.aws.neon.tech/neondb?sslmode=require&channel_binding=require"
-
 }
